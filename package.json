@@ -17,7 +17,9 @@
     "dev": "webpack",
     "deploy": "webpack --config webpack.production.config.js",
     "cordova": "webpack --config webpack.cordova.config.js",
-    "test": "eslint './src/**/*.js'"
+    "test": "npm run standard",
+    "standard": "standard \"./src/**/*.js\"",
+    "standard:fix": "standard --fix  \"./src/**/*.js\""
   },
   "license": "MIT",
   "devDependencies": {
@@ -39,6 +41,8 @@
     "eslint-plugin-standard": "^3.0.1",
     "expose-loader": "^0.7.4",
     "html-webpack-plugin": "^2.30.1",
+    "pre-commit": "^1.2.2",
+    "standard": "^10.0.3",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.10.0"
   },
