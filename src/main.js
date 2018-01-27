@@ -4,6 +4,12 @@ import Phaser from 'phaser'
 
 import config from './config'
 
+import {
+  Boot as BootState,
+  Splash as SplashState,
+  Game as GameState
+} from './states'
+
 class Game extends Phaser.Game {
   constructor () {
     const docElement = document.documentElement
@@ -12,38 +18,44 @@ class Game extends Phaser.Game {
 
     super(width, height, Phaser.CANVAS, 'content', null)
 
-    // with Cordova with need to wait that the device is ready so we will call the Boot state in another file
+    this.state.add('boot', BootState, false)
+    this.state.add('splash', SplashState, false)
+    this.state.add('game', GameState, false)
+
+    // Immiediatley start the boot state
     if (!window.cordova) {
-      // this.state.start('Boot')
-    }
-  }
-}
+      this.state.start('boot')
+    } else {
+      let app = {
+        initialize: function () {
+          document.addEventListener(
+            'deviceready',
+            this.onDeviceReady.bind(this),
+            false
+          )
+        },
 
-window.game = new Game()
+        // deviceready Event Handler
+        //
+        onDeviceReady: function () {
+          this.receivedEvent('deviceready')
+          // When the device is ready, start Phaser Boot state.
+          this.state.start('boot')
+        },
 
-if (window.cordova) {
-  var app = {
-    initialize: function () {
-      document.addEventListener(
-        'deviceready',
-        this.onDeviceReady.bind(this),
-        false
-      )
-    },
+        receivedEvent: function (id) {
+          console.log('Received Event: ' + id)
+        }
+      }
 
-    // deviceready Event Handler
-    //
-    onDeviceReady: function () {
-      this.receivedEvent('deviceready')
-
-      // When the device is ready, start Phaser Boot state.
-      // window.game.state.start('Boot')
-    },
-
-    receivedEvent: function (id) {
-      console.log('Received Event: ' + id)
+      app.initialize()
     }
   }
 
-  app.initialize()
+  create () {
+    //  We're going to be using physics, so enable the Arcade Physics system
+    this.physics.startSystem(Phaser.Physics.ARCADE)
+  }
 }
+
+export default Game
