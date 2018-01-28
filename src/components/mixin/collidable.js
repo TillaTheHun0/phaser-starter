@@ -12,8 +12,10 @@ let Collidable = (superclass) => {
       this.overlapHandlers = overlapHandlers || []
       this.collideDirections = collideDirections || [DOWN, UP, LEFT, RIGHT]
 
-      // enable physics on this
-      game.physics.arcade.enable(this)
+      // enable physics on this if not already enabled
+      if (!this.body) {
+        game.physics.arcade.enable(this)
+      }
 
       // Check collision on each direction
       this.collideDirections.forEach((cd) => {

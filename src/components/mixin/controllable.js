@@ -17,8 +17,8 @@ let Controllable = (superclass) => {
       super(game, x, y, asset)
       this.anchor.setTo(0.5)
 
-      // enable physics
-      if (enablePhysics) {
+      // enable physics if not already enabled
+      if (enablePhysics && !this.body) {
         game.physics.arcade.enable(this)
       }
 
