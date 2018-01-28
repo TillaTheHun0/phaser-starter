@@ -1,13 +1,13 @@
 'use strict'
 
-class SpriteConfig {
-  constructor (game, x, y, asset, enablePhysics, collideSprites) {
-    this.game = game
-    this.x = x
-    this.y = y
-    this.asset = asset
-    this.enablePhysics = enablePhysics
-    this.collideSprites = collideSprites
+import GameObjectConfig from '../game.object.config'
+
+class SpriteConfig extends GameObjectConfig {
+  constructor (game, x, y, asset, enablePhysics, collideHandlers, overlapHandlers, collideDirections) {
+    super(game, x, y, asset, enablePhysics)
+    this.collideSprites = collideHandlers
+    this.overlapHandlers = overlapHandlers
+    this.collideDirections = collideDirections
   }
 }
 

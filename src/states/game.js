@@ -22,8 +22,7 @@ class Game extends Phaser.State {
     this.glidingGirl = new GlidingGirl({
       game: this.game,
       x: this.world.centerX,
-      y: this.world.centerY,
-      enablePhysics: true
+      y: this.world.centerY
     })
 
     this.game.add.existing(this.glidingGirl)

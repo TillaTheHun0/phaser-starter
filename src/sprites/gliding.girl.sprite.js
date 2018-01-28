@@ -1,18 +1,30 @@
 'use strict'
 
-import { ControllableSprite } from './base'
-import { Sprite } from '../components'
+import Phaser from 'phaser'
 
-const { SpriteConfig } = Sprite
+import * as Components from '../components'
+
+const {
+  parent,
+  Mixin: { Controllable },
+  Sprite: { SpriteConfig },
+  Direction: { UP, DOWN, LEFT, RIGHT }
+} = Components
 
 const ASSET = 'glidingGirl'
 
-class GlidingGirl extends ControllableSprite {
+class GlidingGirl extends parent(Phaser.Sprite).mixin(Controllable) {
   /**
    * @param {SpriteConfig} config - the SpriteConfig object
    */
-  constructor ({game, x, y, enablePhysics, collideSprites}) {
-    let spriteConfig = new SpriteConfig(game, x, y, ASSET, enablePhysics, collideSprites)
+  constructor ({game, x, y}) {
+    let enablePhysics = true // enable physics on gliding girl
+
+    let collideHandlers = [] // figure out how to set these automatically based whats in the game
+    let overlapHandlers = [] // figure out how to set these automatically based whats in the game
+    let collideDirections = [UP, DOWN, LEFT, RIGHT]
+
+    let spriteConfig = new SpriteConfig(game, x, y, ASSET, enablePhysics, collideHandlers, overlapHandlers, collideDirections)
     super(spriteConfig)
     this.deceleration = 10
     this.acceleration = 5
@@ -42,7 +54,6 @@ class GlidingGirl extends ControllableSprite {
   }
 
   _default () {
-    console.log('Calculating Deceleration and Applying...')
     // -1 or +1
     let sign = this.body.velocity.x / Math.abs(this.body.velocity.x)
 
